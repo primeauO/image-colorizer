@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Image Colorization</title>
+    <script>
+      const form = document.querySelector('form');
+
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const formData = new FormData(form);
+
+        try {
+          const response = await fetch('/colorize', {
+            method: 'POST',
+            body: formData,
+          });
+
+          if (response.ok) {
+            const blob = await response.blob();
+            const url = URL.createObjectURL(blob);
+
+            // Display the colorized image on the web page
+            const img = document.createElement('img');
+            img.src = url;
+            document.body.appendChild(img);
+          } else {
+            console.error('Colorization failed.');
+          }
+        } catch (error) {
+          console.error('Error:', error);
+        }
+      });
+    </script>
+  </head>
+  <body>
+    <h1>Image Colorization</h1>
+    <form action="/colorize" method="post" enctype="multipart/form-data">
+      <input type="file" name="file" accept=".jpg,.jpeg">
+      <input type="submit" value="Colorize">
+    </form>
+  </body>
+</html>
