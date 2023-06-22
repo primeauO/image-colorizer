@@ -2,8 +2,53 @@
 <html>
   <head>
     <title>Image Colorization</title>
+    <style>
+      body {
+        background-color: #f2f2f2;
+        font-family: Arial, sans-serif;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+      }
+
+      h1 {
+        color: #333;
+        font-size: 40px;
+        margin-bottom: 20px;
+      }
+
+      form {
+        margin-top: 20px;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+      }
+
+      input[type="file"] {
+        display: none;
+      }
+
+      .custom-button {
+        background-color: #4caf50;
+        color: #fff;
+        border: none;
+        padding: 15px 30px;
+        cursor: pointer;
+        transition: all .3s ease;
+        font-size: 20px;
+        margin-right: 10px;
+      }
+
+      .custom-button:hover {
+        background-color: #45a049;
+        transform: translateY(-5px);
+      }
+    </style>
     <script>
       const form = document.querySelector('form');
+      const colorizeButton = document.querySelector('.custom-button');
 
       form.addEventListener('submit', async (e) => {
         e.preventDefault();
@@ -31,13 +76,23 @@
           console.error('Error:', error);
         }
       });
+
+      colorizeButton.addEventListener('click', () => {
+        colorizeButton.classList.add('enlarged');
+
+        // Reset the button size after 300ms
+        setTimeout(() => {
+          colorizeButton.classList.remove('enlarged');
+        }, 300);
+      });
     </script>
   </head>
   <body>
     <h1>Image Colorization</h1>
     <form action="/colorize" method="post" enctype="multipart/form-data">
-      <input type="file" name="file" accept=".jpg,.jpeg">
-      <input type="submit" value="Colorize">
+      <label for="file-upload" class="custom-button">Choose File</label>
+      <input id="file-upload" type="file" name="file" accept=".jpg,.jpeg">
+      <input type="submit" value="Colorize" class="custom-button">
     </form>
   </body>
 </html>
